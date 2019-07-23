@@ -1,5 +1,10 @@
 <div class="card mb-3">
     <div class="card-body">
+        <div>
+            <button class="btn btn-info" (click)="clearOrder.emit()">
+                Clear cart
+            </button>
+        </div>
         <div *ngFor="let category of dishCategories">
             <strong>{{category}}:</strong>
             <span *ngFor="let dish of categorizedDishes[category]">

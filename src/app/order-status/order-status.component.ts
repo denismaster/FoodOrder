@@ -1,5 +1,5 @@
 import { Order } from '../models';
-import { Input, Component } from '@angular/core';
+import { Input, Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-order-status',
@@ -8,6 +8,9 @@ import { Input, Component } from '@angular/core';
 export class OrderStatusComponent{
     @Input()
     order: Order = null;
+
+    @Output()
+    clearOrder = new EventEmitter<void>();
 
     get dishes() {
         if(!this.order || !this.order.dishes) return [];

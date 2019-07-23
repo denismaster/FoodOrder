@@ -21,7 +21,14 @@ export class OrderService {
         return this._clear$.asObservable();
     }
 
-    clearOrder() {
+    clearOrder(orderId: string) {
+        this.afs.doc<Order>(`orders/${orderId}`).update({
+            dishes: []
+        })
+        this._clear$.next();
+    }
+
+    handleOrderClearing(){
         this._clear$.next();
     }
 

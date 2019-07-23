@@ -17,6 +17,10 @@ export class MenuCategoryItemComponent {
   orderId:string;
 
   constructor(private orderService: OrderService) {
+    this.orderService.clearOrder$.subscribe(()=>{
+      this.amount=0;
+      sessionStorage.removeItem(`${this.orderId}-${this.product.name}`)
+    })
   }
 
   ngOnInit() {
