@@ -1,0 +1,20 @@
+<div class="list-group-item list-group-item-action" [class.list-group-item-success]="amount>0" (click)="handleClick()">
+    <div class="d-flex w-100 justify-content-between">
+        <div class="mb-1">{{product.name}}</div>
+        <div *ngIf="product.price">{{product.price}} ₽</div>
+    </div>
+    <p class="mb-1 font-weight-light" *ngIf="product.additionalInformation">
+        {{product.additionalInformation}}</p>
+    <div *ngIf="amount>0">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend" id="button-addon3">
+                <button class="btn btn-success" (click)="increaseAmount()">+</button>
+            </div>
+            <input type="text" disabled class="form-control" placeholder="" [(ngModel)]="amount">
+            <div class="input-group-append" id="button-addon4">
+                <button class="btn btn-danger" (click)="decreaseAmount()">-</button>
+            </div>
+        </div>
+    </div>
+    <small>{{product.weight}}</small>
+</div>

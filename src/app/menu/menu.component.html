@@ -1,0 +1,3 @@
+<div class="card-columns">
+    <app-menu-category (select)="select.emit($event)" [category]="category" *ngFor="let category of menu"></app-menu-category>
+</div>
