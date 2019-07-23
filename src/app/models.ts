@@ -16,3 +16,13 @@ export interface UpdateOrderAction {
     category?: string;
     price: number;
 }
+
+export interface OrderItem {
+    id: string,
+    name: string;
+    category: string,
+    price: number
+}
+export interface Order {
+    dishes: OrderItem[]
+}

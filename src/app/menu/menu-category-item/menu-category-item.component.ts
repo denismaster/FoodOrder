@@ -1,12 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Product, UpdateOrderAction } from '../../models';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Product, UpdateOrderAction } from 'src/app/models';
+import { OrderService } from 'src/app/order.service';
 
 @Component({
   selector: 'app-menu-category-item',
   templateUrl: './menu-category-item.component.html',
 })
-export class MenuCategoryItemComponent implements OnInit {
+export class MenuCategoryItemComponent {
   @Input()
   product: Product = undefined;
 
@@ -16,12 +16,14 @@ export class MenuCategoryItemComponent implements OnInit {
   amount: number = 0;
   orderId:string;
 
-  constructor() {
+  constructor(private orderService: OrderService) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
+    // Get current orderId
     this.orderId = sessionStorage.getItem('current_order');
 
+    // Restore selected amount from session storage
     const itemInStorage = sessionStorage.getItem(`${this.orderId}-${this.product.name}`) || '0';
     if (itemInStorage && !isNaN(Number(itemInStorage)) && Number(itemInStorage)) {
       this.amount = Number(itemInStorage);
@@ -37,7 +39,9 @@ export class MenuCategoryItemComponent implements OnInit {
   }
 
   private emitAction(action: "add" | "remove") {
+    // Save this in session storage
     sessionStorage.setItem(`${this.orderId}-${this.product.name}`, this.amount.toString())
+
     this.click.emit({
       action,
       name: this.product.name,
