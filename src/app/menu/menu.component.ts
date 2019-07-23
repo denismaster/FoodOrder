@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { ProductCategory } from '../models';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ProductCategory, UpdateOrderAction } from '../models';
 
 @Component({
   selector: 'app-menu',
@@ -8,4 +8,7 @@ import { ProductCategory } from '../models';
 export class MenuComponent {
     @Input()
     menu: ProductCategory[] = []
+
+    @Output()
+    select = new EventEmitter<UpdateOrderAction>()
 }

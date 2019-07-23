@@ -1,1 +1,2 @@
-<app-menu [menu]="menu$ | async"></app-menu>
+<app-order-status [order]="order$ | async"></app-order-status>
+<app-menu [menu]="menu$ | async" (select)="updateOrder($event)"></app-menu>

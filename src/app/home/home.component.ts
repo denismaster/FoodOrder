@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductCategory } from '../models';
+import { ProductCategory, Order, UpdateOrderAction } from '../models';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators'
 import { MenuService } from '../menu/menu.service';
@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit {
     menu$: Observable<ProductCategory[]>;
     orderId: string;
 
+    order$: Observable<Order>;
+
     constructor(private activatedRoute: ActivatedRoute, private menuService: MenuService, private orderService: OrderService) { }
 
     ngOnInit() {
@@ -27,7 +29,13 @@ export class HomeComponent implements OnInit {
             this.orderId = order;
             sessionStorage.setItem('current_order', order);
         }
-        
+
         this.menu$ = this.menuService.getMenu().pipe(take(1));
+
+        this.order$ = this.orderService.getOrder(this.orderId);
+    }
+
+    updateOrder(orderUpdate: UpdateOrderAction) {
+        this.orderService.updateOrder(this.orderId, orderUpdate);
     }
 }

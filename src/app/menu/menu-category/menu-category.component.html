@@ -3,7 +3,7 @@
         <h5 class="card-title">{{category.name}}</h5>
     </div>
     <div class="list-group">
-        <app-menu-category-item [product]="product"
+        <app-menu-category-item [product]="product" (click)="handleItemClick($event)"
             *ngFor="let product of category.products"></app-menu-category-item>
     </div>
 </div>

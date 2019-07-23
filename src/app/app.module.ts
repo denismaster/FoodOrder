@@ -11,6 +11,7 @@ import { MenuComponent } from './menu/menu.component';
 import { MenuCategoryComponent } from './menu/menu-category/menu-category.component';
 import { MenuCategoryItemComponent } from './menu/menu-category-item/menu-category-item.component';
 import { environment } from '../environments/environment';
+import { OrderStatusComponent } from './order-status/order-status.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { environment } from '../environments/environment';
     MenuComponent,
     MenuCategoryComponent,
     MenuCategoryItemComponent,
+    OrderStatusComponent,
   ],
   imports: [
     BrowserModule,

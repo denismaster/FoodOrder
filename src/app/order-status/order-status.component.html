@@ -1,0 +1,18 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <div *ngFor="let category of dishCategories">
+            <strong>{{category}}:</strong>
+            <span *ngFor="let dish of categorizedDishes[category]">
+                <span *ngIf="dish.amount>1">
+                    {{dish.name}} x {{dish.amount}}
+                </span>
+                <span *ngIf="dish.amount==1">
+                    {{dish.name}}
+                </span>
+            </span>
+        </div>
+        <div>
+            <strong>Total: {{ totalPrice}} ₽</strong>
+        </div>
+    </div>
+</div>

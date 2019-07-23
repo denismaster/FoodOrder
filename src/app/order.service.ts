@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { v4 as uuid } from 'uuid';
-import { Order } from './models';
+import { Order, UpdateOrderAction } from './models';
+import * as firebase from 'firebase';
+import { take } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -23,14 +25,45 @@ export class OrderService {
         this._clear$.next();
     }
 
+    getOrder(orderId:string): Observable<Order> {
+        const orderDoc = this.afs.doc<Order>(`orders/${orderId}`);
+        return orderDoc.valueChanges();
+    }
 
+    async updateOrder(orderId: string, update: UpdateOrderAction) {
+        const order = await this.afs.doc<Order>(`orders/${orderId}`).valueChanges().pipe(take(1)).toPromise();
 
-    createOrder() {
+        if (update.action == "add") {
+          this.afs.doc<Order>(`orders/${orderId}`).update({
+            dishes: <any>firebase.firestore.FieldValue.arrayUnion({
+              id: uuid(),
+              name: update.name,
+              category: update.category,
+              price: update.price
+            })
+          })
+        }
+        else {
+          const dishIds = order.dishes.filter(d=>d.name==update.name).map(d=>d.id);
+          const idToRemove = dishIds[0];
+          if(!idToRemove) return;
+          this.afs.doc<Order>(`orders/${orderId}`).update({
+            dishes: <any>firebase.firestore.FieldValue.arrayRemove({
+              id: idToRemove,
+              name: update.name,
+              category: update.category,
+              price: update.price
+            })
+          })
+        }
+      }
+
+    async createOrder() {
         let orderId = uuid();
         sessionStorage.setItem('current_order', orderId)
-        this.afs.collection("orders").doc<Order>(orderId).set({ dishes: [] })
+        return this.afs.collection("orders").doc<Order>(orderId).set({ dishes: [] })
             .then(_ => {
-                this.router.navigate(['/'], { queryParams: { 'order': orderId } });
+                return this.router.navigate(['/'], { queryParams: { 'order': orderId } });
             })
             .catch(err => {
                 alert(err);
